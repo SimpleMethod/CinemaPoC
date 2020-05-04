@@ -20,7 +20,7 @@ Poof of the concept of simple cinema database management using Hazelcast and Ama
 ## 📖 Documentation:
 [JavaDoc](https://github.com/SimpleMethod/CinemaPoC/tree/master/apidocs)
 
-## 📖 Short video of presentation:
+## 🎥 Short video of presentation:
 https://youtu.be/zpj2zNMYlUs
 
 ## 🗺 Class diagram:

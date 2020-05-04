@@ -30,7 +30,7 @@ https://youtu.be/zpj2zNMYlUs
 3. After starting, it is necessary to initialize table using endpoints: 
 http://localhost:8090/1.0/initcinema
 http://localhost:8090/1.0/initusers
-Using HTTP header with API key and abc2137 value. 
+Using GET HTTP request with header as API key and abc2137 value. 
 
 ## 🗺 Class diagram:
 ![CinemaPackage](https://raw.githubusercontent.com/SimpleMethod/CinemaPoC/master/PackageCinema.png)

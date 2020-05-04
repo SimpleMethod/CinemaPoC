@@ -17,11 +17,20 @@ Poof of the concept of simple cinema database management using Hazelcast and Ama
 
 ## 🕸️ REST Documentation:
 [REST API](https://documenter.getpostman.com/view/7673549/SzmYA2eQ?version=latest)
+
 ## 📖 Documentation:
 [JavaDoc](https://github.com/SimpleMethod/CinemaPoC/tree/master/apidocs)
 
 ## 🎥 Short video of presentation:
 https://youtu.be/zpj2zNMYlUs
+
+## 🔨 Start-up instructions:
+1. A graphic interface is available at http://localhost:8090/ .
+2. Using DynamoDB requires that you have your own Amazon Web Services IAM keys, which should be placed in the application.properties file. 
+3. After starting, it is necessary to initialize table using endpoints: 
+http://localhost:8090/1.0/initcinema
+http://localhost:8090/1.0/initusers
+Using HTTP header with API key and abc2137 value. 
 
 ## 🗺 Class diagram:
 ![CinemaPackage](https://raw.githubusercontent.com/SimpleMethod/CinemaPoC/master/PackageCinema.png)

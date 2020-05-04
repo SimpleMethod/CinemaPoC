@@ -1,8 +1,11 @@
 package com.simplemethod.cinema.hazelcastModel;
 
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 import java.util.Map;
 
+@Component
 public class CinemaModel implements Serializable {
     String ID;
     Integer hall;

@@ -18,6 +18,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.Map;
 
+
 @RestController
 public class RESTHazelcastServices {
 
@@ -26,7 +27,6 @@ public class RESTHazelcastServices {
 
     @Value("${password.key}")
     private String hash;
-
 
     /**
      * Pobieranie informacji na temat użytkownika.
@@ -243,6 +243,54 @@ public class RESTHazelcastServices {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
+    /**
+     * Pobieranie filmów zarezerowanych przez użytkownika.
+     *
+     * @param id     Identyfikator użytkownika.
+     * @param apiKey Nagłówek HTTP z kodem autoryzacji.
+     * @return Model filmu oraz status kodu HTTP.
+     */
+    @GetMapping(value = "/1.1/movie/user/{id}", produces = "application/json", headers = "Accept=application/json")
+    @ResponseBody
+    public ResponseEntity<List<CinemaModel>> getUserMovies(@Valid @PathVariable String id, @Valid @RequestHeader("API") String apiKey) {
+        if (apiKey.equals(key) && id != null) {
+
+            HazelcastClient.shutdownAll();
+            HazelcastInstance client = OpenConnection();
+            UserModel result = new UserModel();
+            IMap<String, String> userModelIList = client.getMap("users");
+            for (Map.Entry<String, String> entry : userModelIList.entrySet()) {
+                if (id.equals(entry.getKey())) {
+                    result.setEmail(entry.getKey());
+                }
+            }
+
+            if (result.getEmail() == null) {
+                HazelcastClient.shutdownAll();
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            IMap<String, CinemaModel> cinemaModelIMap = client.getMap("cinema");
+            if (cinemaModelIMap.size() == 0) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            List<CinemaModel> userModels= new ArrayList();
+            cinemaModelIMap.entrySet().forEach(entry->{
+                if(entry.getValue().getSeats().containsValue(id))
+                {
+                    userModels.add(new CinemaModel(entry.getValue().getID(),entry.getValue().getHall(),entry.getValue().getDate(),entry.getValue().getMovieName(),entry.getValue().getMovieDirector(),entry.getValue().getYear(),entry.getValue().getLengthInMinutes(),entry.getValue().getSeats()));
+                }
+            });
+            if(userModels.size()==0)
+            {
+                HazelcastClient.shutdownAll();
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            return new ResponseEntity<>(userModels, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
 
     /**
      * Wyświetlanie filmów z podanego zakresu.
@@ -452,3 +500,4 @@ public class RESTHazelcastServices {
         return HazelcastClient.newHazelcastClient(clientConfig);
     }
 }
+

@@ -1,0 +1,5 @@
+com.simplemethod.cinema
+com.simplemethod.cinema.dataDynamoModel
+com.simplemethod.cinema.dataJSONModel
+com.simplemethod.cinema.hazelcastModel
+com.simplemethod.cinema.webController

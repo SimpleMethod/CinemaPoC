@@ -179,6 +179,28 @@
         };
     });
 
+    app.controller('movieUser', function ($scope, $http) {
+        $scope.master = {};
+        $scope.open = function (cinema) {
+            $scope.master = angular.copy(cinema);
+            $http({
+                url: 'http://localhost:8090/' + api + '/movie/user/'+  $scope.master.email,
+                method: 'GET',
+                contentType: 'application/json',
+                headers: {
+                    'API': 'abc2137'
+                },
+            }).then(
+                function (response) {
+                    $scope.moviesList = response.data;
+                    status(response.status);
+                }, function (response) {
+                    status(response.status);
+                }
+            );
+        };
+    });
+
 
     app.controller('movieBetweenDate', function ($scope, $http) {
         $scope.master = {};

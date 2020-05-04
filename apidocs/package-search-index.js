@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.simplemethod.cinema"},{"l":"com.simplemethod.cinema.dataDynamoModel"},{"l":"com.simplemethod.cinema.dataJSONModel"},{"l":"com.simplemethod.cinema.hazelcastModel"},{"l":"com.simplemethod.cinema.webController"}]

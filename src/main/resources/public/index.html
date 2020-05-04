@@ -21,9 +21,6 @@
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#"><span data-feather="home"></span>Dashboard</a>
-                    </li>
                 </ul>
 
             </div>
@@ -310,6 +307,64 @@
                                     <p ng-if="name==-1">Wolne</p>
                                     <p ng-if="name!=-1">{{name}}</p>
                                 </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                <h4 class="h4">Wyszukiwanie rezerwacji użytkownika: </h4></div>
+            <div ng-controller="movieUser">
+                <form novalidate class="simple-form">
+                    <div class="form-group">
+                        <label>Identyfikator użytkownika:</label> <input type="email" ng-model="cinema.email"
+                                                                      class="form-control">
+                    </div>
+                    <input type="submit" ng-click="open(cinema)" value="Pobierz informacje o filmie"
+                           class="btn btn-success"/>
+                </form>
+                <br><br>
+                <table ng-if="moviesList" id="movieID" class="table table-striped table-bordered table-sm"
+                       cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th class="th-sm">Id filmu
+                        </th>
+                        <th class="th-sm">Sala kinowa
+                        </th>
+                        <th class="th-sm">Data seansu
+                        </th>
+                        <th class="th-sm">Nazwa
+                        </th>
+                        <th class="th-sm">Producent
+                        </th>
+                        <th class="th-sm">Rok produkcji
+                        </th>
+                        <th class="th-sm">Długość w minutach
+                        </th>
+                        <th class="th-sm">Status rezerwacji
+                        </th>
+                    </tr>
+                    </thead>
+                    <tr ng-repeat="movieList in moviesList">
+                        <td>{{movieList.id}}</td>
+                        <td>{{movieList.hall}}</td>
+                        <td>
+                            <div ng-controller="TimestampCtrl">
+                                {{ toTimestamp(movieList.date) }}
+                            </div>
+                        </td>
+                        <td>{{movieList.movieName}}</td>
+                        <td>{{movieList.movieDirector}}</td>
+                        <td>{{movieList.year}}</td>
+                        <td>{{movieList.lengthInMinutes}}</td>
+                        <td>
+                            <ul>
+                                <div ng-repeat="name in movieList.seats">
+                                    <p ng-if="name==cinema.email">Number siedzenia:{{$index + 1}} status rezerwacji: </p>
+                                    <p ng-if="name==cinema.email">{{name}}</p>
+                                </div>
                             </ul>
                         </td>
                     </tr>

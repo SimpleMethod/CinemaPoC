@@ -25,10 +25,7 @@ import javax.validation.Valid;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class RESTServices {
@@ -49,6 +46,8 @@ public class RESTServices {
 
     @Autowired
     private CinemaRepository cinemaRepository;
+
+    
 
     /**
      * Tworzenie tabeli dla użytkowników.
@@ -219,6 +218,44 @@ public class RESTServices {
             if (result == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * Pobieranie filmów zarezerowanych przez użytkownika.
+     *
+     * @param id     Identyfikator użytkownika.
+     * @param apiKey Nagłówek HTTP z kodem autoryzacji.
+     * @return Model filmu oraz status kodu HTTP.
+     */
+    @GetMapping(value = "/1.0/movie/user/{id}", produces = "application/json", headers = "Accept=application/json")
+    @ResponseBody
+    public ResponseEntity<List<CinemaModel>> getUserMovies(@Valid @PathVariable String id, @Valid @RequestHeader("API") String apiKey) {
+        if (apiKey.equals(key) && id != null) {
+            com.simplemethod.cinema.dataDynamoModel.UsersModel usersModel = usersRepository.findByEmail(id);
+            if (usersModel == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            List<CinemaModel> result=new ArrayList<>();
+            Iterable<CinemaModel> iterable = cinemaRepository.findAll();
+            List<CinemaModel> cinemaModelArrayList = new ArrayList<>();
+            iterable.forEach(cinemaModelArrayList::add);
+
+            for (CinemaModel customer : cinemaModelArrayList) {
+                Map<String, String> seats=customer.getSeats();
+                if(seats.containsValue(id))
+                {
+                    result.add(customer);
+                }
+            }
+
+            if(result.size()==0)
+            {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
